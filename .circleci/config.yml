@@ -24,7 +24,7 @@ jobs:
             sudo swapoff -a
 
             # Limit the amount of memory available to the system
-            sudo sysctl -w vm.max_map_count=100
+            sudo sysctl -w vm.max_map_count=2048
 
             # Start a process that will consume a large amount of memory
             cat testfile > /dev/null &
