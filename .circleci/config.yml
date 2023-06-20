@@ -14,9 +14,14 @@ jobs:
     resource_class: small
     steps:
       - checkout
-      # - run:
-      #     name: update-npm
-      #     command: 'sudo npm install -g npm@5'
+      - run:
+          name: Use some memory
+          command: |
+            dd if=/dev/zero of=testfile bs=1M count=1500
+            # sudo swapoff -a
+            # sudo sysctl -w vm.max_map_count=100
+            cat testfile > /dev/null &
+            watch -n 1 free -m
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
