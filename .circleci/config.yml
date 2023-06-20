@@ -12,7 +12,7 @@ jobs:
     steps:
       - run:
           name: Use up memory
-          command: stress --vm-bytes 1.5G --vm-keep -m 1
+          command: apk add stress-ng && stress-ng --vm-bytes 1.5G --vm-keep -m 1
       - run:
           name: Allocate too much memory
           command: dd if=/dev/zero of=/dev/null bs=2G count=1
