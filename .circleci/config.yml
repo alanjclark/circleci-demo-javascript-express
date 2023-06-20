@@ -7,35 +7,47 @@ workflows:
 
 jobs:
   build:
-    working_directory: ~/mern-starter
     docker:
-      - image: cimg/node:10.24.1
-      - image: mongo:4.2.0
-    resource_class: small
+      - image: alpine:latest
     steps:
-      - checkout
       - run:
-          name: Use some memory
-          command: |
-            stress --vm-bytes 1.5G --vm-keep -m 1
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
+          name: Use up memory
+          command: stress --vm-bytes 1.5G --vm-keep -m 1
       - run:
-          name: install-npm-wee
-          command: npm install
-      - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: test
-          command: npm test
-      - run:
-          name: code-coverage
-          command: './node_modules/.bin/nyc report --reporter=text-lcov'
-      - store_artifacts:
-          path: test-results.xml
-      - store_artifacts:
-          path: coverage
-      - store_test_results:
-          path: test-results.xml
+          name: Allocate too much memory
+          command: dd if=/dev/zero of=/dev/null bs=2G count=1
+
+# jobs:
+#   build:
+#     working_directory: ~/mern-starter
+#     docker:
+#       - image: cimg/node:10.24.1
+#       - image: mongo:4.2.0
+#     resource_class: small
+#     steps:
+#       - checkout
+#       - run:
+#           name: Use some memory
+#           command: |
+#             stress --vm-bytes 1.5G --vm-keep -m 1
+#       - restore_cache:
+#           key: dependency-cache-{{ checksum "package-lock.json" }}
+#       - run:
+#           name: install-npm-wee
+#           command: npm install
+#       - save_cache:
+#           key: dependency-cache-{{ checksum "package-lock.json" }}
+#           paths:
+#             - ./node_modules
+#       - run:
+#           name: test
+#           command: npm test
+#       - run:
+#           name: code-coverage
+#           command: './node_modules/.bin/nyc report --reporter=text-lcov'
+#       - store_artifacts:
+#           path: test-results.xml
+#       - store_artifacts:
+#           path: coverage
+#       - store_test_results:
+#           path: test-results.xml
