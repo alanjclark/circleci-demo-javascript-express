@@ -17,11 +17,26 @@ jobs:
       - run:
           name: Use some memory
           command: |
-            dd if=/dev/zero of=testfile bs=1M count=1500
-            # sudo swapoff -a
-            # sudo sysctl -w vm.max_map_count=100
+            # Create a file with a large size
+            dd if=/dev/zero of=testfile bs=1M count=10000
+
+            # Disable the swap space
+            sudo swapoff -a
+
+            # Limit the amount of memory available to the system
+            sudo sysctl -w vm.max_map_count=100
+
+            # Start a process that will consume a large amount of memory
             cat testfile > /dev/null &
+
+            # Monitor the memory usage of the system
             watch -n 1 free -m
+
+            # Wait for the memory usage to reach the limit set in step 3
+            # You should see the system start to swap memory to disk, which will cause the system to slow down significantly.
+
+            # Stop the process
+            # killall cat
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
