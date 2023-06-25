@@ -21,9 +21,9 @@ jobs:
           name: Use some memory
           command: sudo stress-ng --vm-bytes 3G --vm-keep -m 1
           background: true
-      - run:
-          name: Sleep for 20 seconds
-          command: sleep 30
+      # - run:
+      #     name: Sleep for 20 seconds
+      #     command: sleep 30
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
