@@ -19,7 +19,7 @@ jobs:
           command: sudo apt update && sudo apt install stress-ng
       - run:
           name: Use some memory
-          command: sudo stress-ng --vm-bytes 1.9G --vm-keep -m 1
+          command: sudo stress-ng --vm-bytes 3G --vm-keep -m 1
           background: true
       - run:
           name: Sleep for 20 seconds
