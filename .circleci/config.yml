@@ -27,9 +27,15 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install stress-ng
+          command: sudo apt update && sudo apt install stress-ng
+      - run:
           name: Use some memory
-          command: |
-            sudo apt update && sudo apt install stress-ng && sudo stress-ng --vm-bytes 1.5G --vm-keep -m 1
+          command: sudo stress-ng --vm-bytes 1.5G --vm-keep -m 1
+          background: true
+      - run:
+          name: Sleep for 20 seconds
+          command: sleep 30
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
