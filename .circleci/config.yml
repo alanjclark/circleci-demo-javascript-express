@@ -5,18 +5,6 @@ workflows:
     jobs:
       - build
 
-# jobs:
-#   build:
-#     docker:
-#       - image: alpine:latest
-#     steps:
-#       - run:
-#           name: Use up memory
-#           command: apk add stress-ng && stress-ng --vm-bytes 1.5G --vm-keep -m 1
-#       - run:
-#           name: Allocate too much memory
-#           command: dd if=/dev/zero of=/dev/null bs=2G count=1
-
 jobs:
   build:
     working_directory: ~/mern-starter
@@ -31,7 +19,7 @@ jobs:
           command: sudo apt update && sudo apt install stress-ng
       - run:
           name: Use some memory
-          command: sudo stress-ng --vm-bytes 1.5G --vm-keep -m 1
+          command: sudo stress-ng --vm-bytes 1.9G --vm-keep -m 1
           background: true
       - run:
           name: Sleep for 20 seconds
